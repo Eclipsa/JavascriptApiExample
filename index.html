@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.1/jquery.xdomainrequest.min.js"></script>
+    <title>ExcelToApp API test</title>
+  </head>
+
+  <body>
+    <button id="calculate">Calculate</button>
+    <p>Result: <label id="result"></label></p>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var contentType ="application/x-www-form-urlencoded; charset=utf-8";
+        if(window.XDomainRequest) //for IE8,IE9
+            contentType = "text/plain";
+
+        $("#calculate").click(function(){
+          $.getJSON("config.json", function(json) {
+            json = JSON.stringify(json);
+            console.log(json);
+            $.ajax({
+              method: "POST",
+              contentType: contentType,
+              url: "http://eclipsa.com.ar:4567/calculate/1/1",
+              dataType: "json",
+              data: json
+            })
+              .done(function( msg ) {
+                console.log(msg);
+                $("#result").text(msg);
+              });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
